@@ -207,17 +207,22 @@ bot.on('message', (message) => {
 
 
     if(cmd === 'update') {
-        child = exec("git pull", function (error, stdout, stderr) {
-        if(error) return console.log(error);
-        let response = stdout.split(' ')[0];
-        if(response === 'Updating') {
-            console.log(`Successfully updated. Reboot...`);
-            message.channel.sendMessage('Successfully updated! Rebooting...').then(()=>process.exit(1));
-        } else {
-            message.channel.sendMessage(stdout);
+        try {
+            child = exec("git pull", function (error, stdout, stderr) {
+            if(error) return console.log(error);
+            let response = stdout.split(' ')[0];
+            if(response === 'Updating') {
+                console.log(`Successfully updated. Reboot...`);
+                message.channel.sendMessage('Successfully updated! Rebooting...').then(()=>process.exit(1));
+            } else {
+                message.channel.sendMessage(stdout);
+                return;
+            }
+            });
+        } catch(err) {
+            message.channel.sendMessage(`ERROR: ${err}`);
             return;
         }
-        });
     }
 
    if(cmd !== 'update') {
