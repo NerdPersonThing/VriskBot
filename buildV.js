@@ -213,7 +213,8 @@ bot.on('message', (message) => {
             let response = stdout.split(' ')[0];
             if(response === 'Updating') {
                 console.log(`Successfully updated. Reboot...`);
-                message.channel.sendMessage('Successfully updated! Rebooting...').then(()=>process.exit(1));
+                message.channel.sendMessage('Successfully updated! Rebooting...')
+                process.exit(1);
             } else {
                 message.channel.sendMessage(stdout);
                 return;
