@@ -1,7 +1,7 @@
 function everything() {
 
 const trigger = '%';
-const version = '1.1.0';
+const version = '1.1.1';
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -246,7 +246,7 @@ bot.on('message', (message) => {
 
 }); //end message event
 
-bot.on('guildMemberAdd', member => {
+bot.on('guildMemberAdd', (member) => {
     console.log(`New member: ${member.user} on ${member.guild}.`);
     let guild = member.guild;
         guild.defaultChannel.sendMessage(`Welcome, ${member.user}, to the server! *(Now everyone bully the noob!)*`).catch(console.error);
@@ -260,15 +260,20 @@ bot.on("guildMemberRemove", (member) => {
 }); //end member leaves event
 
 
-    if(test === 1) {
-        bot.login(config.tokenTest);
-        console.log('Ready for testing!');
-    } else {
-        bot.login(config.tokenVrisk);
-        console.log('This is not a drill!');
-    }
+if(test === 1) {
+    bot.login(config.tokenTest);
+    console.log('Ready for testing!');
+} else {
+    bot.login(config.tokenVrisk);
+    console.log('This is not a drill!');
+} //end login
+
+
+bot.on('ready', () => {
     console.log('Bot is up and running. Press CTRL+C to stop...');
- //end readylog
+    bot.channels.get('262249669692882946').sendMessage('Bot online.');
+
+}); //end readylog
 
 
 
