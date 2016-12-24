@@ -2,7 +2,7 @@ function everything() {
 
 const trigger = '%';
 const version = '1.0.7';
-var test = 1
+var test = 0
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
