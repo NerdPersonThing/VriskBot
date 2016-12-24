@@ -134,7 +134,7 @@ bot.on('message', (message) => {
     
     
     if(message.author.id !== '193587165114925057') { 
-        if(cmd === 'mute' || cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval') {
+        if(cmd === 'mute' || cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update') {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
             return;
         } else {
@@ -154,7 +154,6 @@ bot.on('message', (message) => {
         }
         muteMember.addRole(mutedRole);
         message.channel.sendMessage(`${message.mentions.users.first()} has been muted.`);
-
         return;
     }
      if(cmd === 'unmute') {
@@ -216,11 +215,15 @@ bot.on('message', (message) => {
             message.channel.sendMessage('Successfully updated! Rebooting...').then(()=>process.exit(1));
         } else {
             message.channel.sendMessage(stdout);
+            return;
         }
         });
     }
-   
-    
+
+   if(cmd !== 'update') {
+        message.channel.sendMessage('Sorry, scrub. Invalid command. Either learn to spell or do %help for a list of commands.');
+        return;
+   }
 
 }); //end message event
 
