@@ -217,6 +217,7 @@ bot.on('message', (message) => {
                 process.exit(1);
             } else {
                 message.channel.sendMessage(stdout);
+                console.log(`Update failed: ${stdout}`);
                 return;
             }
             });
