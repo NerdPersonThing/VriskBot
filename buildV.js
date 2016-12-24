@@ -142,10 +142,14 @@ bot.on('message', (message) => {
         return;
     }
 
-    
+    if(cmd === 'setgame') {
+        bot.user.setGame(origargs.join(' '));
+        message.channel.sendMessage(`Now playing "${origargs.join(' ')}".`);
+        return;
+    }
     
     if(message.author.id !== '193587165114925057') { 
-        if(cmd === 'mute' || cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update') {
+        if(cmd === 'mute' || cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update' || cmd === 'setgame') {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
             return;
         } else {
@@ -153,6 +157,8 @@ bot.on('message', (message) => {
             return;
         }
     }
+
+    
 
     if(cmd === 'mute') {
         let mutedRole = message.guild.roles.find('name', 'Muted');
@@ -183,6 +189,7 @@ bot.on('message', (message) => {
         message.channel.sendMessage(`${message.mentions.users.first()} has been unmuted.`)
 
         return;
+   
     }
 
 
@@ -216,6 +223,7 @@ bot.on('message', (message) => {
             return;
         }
     }
+
 
 
     if(cmd === 'update') {
