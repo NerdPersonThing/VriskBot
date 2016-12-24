@@ -67,10 +67,11 @@ bot.on('message', (message) => {
 
     let cmd = message.content.split(' ')[0];
     cmd = cmd.slice(trigger.length);
-    console.log(message.author.username + ': ' + cmd);
 
     let origargs = origmsg.split(' ').slice(1);
     let args = message.content.split(' ').slice(1);
+
+    console.log(`${message.author.username}: "${message.content}"`);
 
     if(cmd === 'info') {
         message.reply(`Hello! My name is Vriskbot, version ${version}. I live on a Raspberry Pi! \n I was programmed - albeit not very well - by some guy named Luke. *(I\'ve heard he has a large forehead.)* Anyway, if you want to see what I can do, just do %help.`);
@@ -212,8 +213,14 @@ bot.on('message', (message) => {
             if(error) return console.log(error);
             let response = stdout.split(' ')[0];
             if(response === 'Updating') {
-                console.log(`Successfully updated. Reboot...`);
                 message.channel.sendMessage('Successfully updated! Rebooting...');
+                console.log(`Successfully updated. Rebooting...`);
+                
+                let y = 0
+                for(i = 0; i < 300; i++) { //stalls
+                    y = y + 1
+                }
+
                 process.exit(1);
             } else {
                 message.channel.sendMessage(stdout);
