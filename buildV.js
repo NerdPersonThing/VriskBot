@@ -2,7 +2,7 @@ function everything() {
 
 const trigger = '%';
 const version = '1.0.8';
-var test = 1
+var test = 0
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -207,7 +207,7 @@ bot.on('message', (message) => {
 
 
     if(cmd === 'update') {
-        if(test === 0) {
+        if(test === 0 || args[0] === 'override') {
             child = exec("git pull", function (error, stdout, stderr) {
             if(error) return console.log(error);
             let response = stdout.split(' ')[0];
@@ -221,7 +221,7 @@ bot.on('message', (message) => {
             }
             });
         } else {
-            message.channel.sendMessage(`You can't update the testbot, silly.`);
+            message.channel.sendMessage('You can\'t update the testbot without using `%update override.`');
             return;
         }
     }
