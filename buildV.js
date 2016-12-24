@@ -1,6 +1,7 @@
 function everything() {
 
 const trigger = '%';
+const version = '1.0.7';
 var test = 1
 
 const config = require('../configVrisk.json');
@@ -26,6 +27,7 @@ bot.on('message', (message) => {
             shutdown();
         } else if(message.content === 'n') {
             message.channel.sendMessage('That was a close one!');
+            console.log('Shutdown canceled.');
             downshut = 0
             return;
         } else {
@@ -37,7 +39,7 @@ bot.on('message', (message) => {
     if(message.content.startsWith(trigger + 'wakeup')) {
          if(message.author.id === '193587165114925057') {
            sleep = 0
-            message.channel.sendMessage('Wh... All right, all right, I\'m awake.')
+            message.channel.sendMessage('Wh... All right, all right, I\'m awake.');
             return;
         } else {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
@@ -71,7 +73,7 @@ bot.on('message', (message) => {
     let args = message.content.split(' ').slice(1);
 
     if(cmd === 'info') {
-        message.reply('Hello! My name is Vriskbot, version 1.0.4. I live on a Raspberry Pi! \n I was programmed - albeit not very well - by some guy named Luke. *(I\'ve heard he has a large forehead.)* Anyway, if you want to see what I can do, just do %help.');
+        message.reply(`Hello! My name is Vriskbot, version ${version}. I live on a Raspberry Pi! \n I was programmed - albeit not very well - by some guy named Luke. *(I\'ve heard he has a large forehead.)* Anyway, if you want to see what I can do, just do %help.`);
         return;
     }
            
@@ -99,7 +101,7 @@ bot.on('message', (message) => {
             }
 
             if(numArray.length === 0) {
-                 message.channel.sendMessage('Usage: "%math add [number] [number]".')
+                 message.channel.sendMessage('Usage: "%math add [number] [number]".');
                  return;
             } else {
                 if(sum !== sum) {
@@ -148,10 +150,10 @@ bot.on('message', (message) => {
             return message.channel.sendMessage('Please mention a user to mute.');
         }
         if(1 === 0) {
-            return message.channel.sendMessage('I don\'t have the proper permissions.')
+            return message.channel.sendMessage('I don\'t have the proper permissions.');
         }
         muteMember.addRole(mutedRole);
-        message.channel.sendMessage(`${message.mentions.users.first()} has been muted.`)
+        message.channel.sendMessage(`${message.mentions.users.first()} has been muted.`);
 
         return;
     }
@@ -196,10 +198,10 @@ bot.on('message', (message) => {
                 evaled = require('util').inspect(evaled);
             }
 
-            message.channel.sendCode('xl', evaled)
+            message.channel.sendCode('xl', evaled);
             return;
         } catch(err) {
-            message.channel.sendMessage(`ERROR: ${err}`)
+            message.channel.sendMessage(`ERROR: ${err}`);
             return;
         }
     }
@@ -208,7 +210,13 @@ bot.on('message', (message) => {
     if(cmd === 'update') {
         child = exec("git pull", function (error, stdout, stderr) {
         if(error) return console.log(error);
-        message.reply(stdout).then(()=>process.exit(1));
+        let response = stdout.split(' ')[0];
+        if(response === 'Updating') {
+            console.log(`Successfully updated. Reboot...`);
+            message.channel.sendMessage('Successfully updated! Rebooting...').then(()=>process.exit(1));
+        } else {
+            message.channel.sendMessage(stdout);
+        }
         });
     }
    
@@ -225,7 +233,7 @@ bot.on('guildMemberAdd', member => {
 bot.on("guildMemberRemove", (member) => {
     console.log(`${member.user.username} has left ${member.guild}.`);
     let guild = member.guild;
-        guild.defaultChannel.sendMessage(`${member.user.username} has left the server. Guess someone got salty.`)
+        guild.defaultChannel.sendMessage(`${member.user.username} has left the server. Guess someone got salty.`);
 
 }); //end member leaves event
 
@@ -243,7 +251,8 @@ bot.on("guildMemberRemove", (member) => {
 
 
 function shutdown() {
-    kilursalph(); //meaningless, generates error
+    console.log('Shutdown commencing...');
+    process.exit(1);
     }
 
 
