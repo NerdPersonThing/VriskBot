@@ -1,15 +1,24 @@
 function everything() {
 
 const trigger = '%';
-const version = '1.0.9';
-var test = 0
+const version = '1.1.0';
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 var exec = require('child_process').exec;
-var sleep = 0
-var downshut = 0
+var sleep = 0;
+var downshut = 0;
+
+var path = require('path');
+var scriptName = path.basename(__filename); //writes name of JS file as scriptName
+
+if(scriptName === 'buildT.js') {
+    test = 1;
+}
+if(scriptName === 'buildV.js') {
+    test = 0;
+}
 
 
 
@@ -260,7 +269,6 @@ bot.on("guildMemberRemove", (member) => {
     }
     console.log('Bot is up and running. Press CTRL+C to stop...');
  //end readylog
-//console.log(process.argv);
 
 
 
