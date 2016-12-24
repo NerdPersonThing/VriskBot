@@ -260,7 +260,7 @@ bot.on("guildMemberRemove", (member) => {
     }
     console.log('Bot is up and running. Press CTRL+C to stop...');
  //end readylog
-console.log(process.argv);
+//console.log(process.argv);
 
 
 
