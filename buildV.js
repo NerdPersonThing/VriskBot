@@ -271,7 +271,7 @@ if(test === 1) {
 
 bot.on('ready', () => {
     console.log('Bot is up and running. Press CTRL+C to stop...');
-    bot.channels.get('262249669692882946').sendMessage('Bot online.');
+    bot.channels.get('262249669692882946').sendMessage(`Bot online, version ${version}.`);
 
 }); //end readylog
 
