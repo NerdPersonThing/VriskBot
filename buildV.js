@@ -1,7 +1,7 @@
 function everything() {
 
 const trigger = '%';
-const version = '1.0.7';
+const version = '1.0.8';
 var test = 0
 
 const config = require('../configVrisk.json');
