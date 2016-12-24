@@ -2,7 +2,7 @@ function everything() {
 
 const trigger = '%';
 const version = '1.0.8';
-var test = 0
+var test = 1
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -207,21 +207,21 @@ bot.on('message', (message) => {
 
 
     if(cmd === 'update') {
-        try {
+        if(test === 0) {
             child = exec("git pull", function (error, stdout, stderr) {
             if(error) return console.log(error);
             let response = stdout.split(' ')[0];
             if(response === 'Updating') {
                 console.log(`Successfully updated. Reboot...`);
-                message.channel.sendMessage('Successfully updated! Rebooting...')
+                message.channel.sendMessage('Successfully updated! Rebooting...');
                 process.exit(1);
             } else {
                 message.channel.sendMessage(stdout);
                 return;
             }
             });
-        } catch(err) {
-            message.channel.sendMessage(`ERROR: ${err}`);
+        } else {
+            message.channel.sendMessage(`You can't update the testbot, silly.`);
             return;
         }
     }
@@ -256,6 +256,7 @@ bot.on("guildMemberRemove", (member) => {
     }
     console.log('Bot is up and running. Press CTRL+C to stop...');
  //end readylog
+
 
 
 
