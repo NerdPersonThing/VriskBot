@@ -1,7 +1,7 @@
 function everything() {
 
 const trigger = '%';
-const version = '1.0.8';
+const version = '1.0.9';
 var test = 0
 
 const config = require('../configVrisk.json');
@@ -40,9 +40,10 @@ bot.on('message', (message) => {
          if(message.author.id === '193587165114925057') {
            sleep = 0
             message.channel.sendMessage('Wh... All right, all right, I\'m awake.');
+             bot.user.setStatus('online');
             return;
         } else {
-            message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
+            message.reply('ZZZZZ... *(You don\'t have permission to wake me up.)');
             return;
         }    
     }  
@@ -178,6 +179,7 @@ bot.on('message', (message) => {
 
     if(cmd === 'sleep') {
         message.channel.sendMessage('Going to sleep...');
+        bot.user.setStatus('idle');
         sleep = 1
         return;
     }
@@ -215,12 +217,6 @@ bot.on('message', (message) => {
             if(response === 'Updating') {
                 message.channel.sendMessage('Successfully updated! Rebooting...');
                 console.log(`Successfully updated. Rebooting...`);
-                
-                let y = 0
-                for(i = 0; i < 300; i++) { //stalls
-                    y = y + 1
-                }
-
                 process.exit(1);
             } else {
                 message.channel.sendMessage(stdout);
@@ -264,7 +260,7 @@ bot.on("guildMemberRemove", (member) => {
     }
     console.log('Bot is up and running. Press CTRL+C to stop...');
  //end readylog
-
+console.log(process.argv);
 
 
 
