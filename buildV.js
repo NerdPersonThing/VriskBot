@@ -142,11 +142,7 @@ bot.on('message', (message) => {
         return;
     }
 
-    if(cmd === 'setgame') {
-        bot.user.setGame(origargs.join(' '));
-        message.channel.sendMessage(`Now playing "${origargs.join(' ')}".`);
-        return;
-    }
+    
     
     if(message.author.id !== '193587165114925057') { 
         if(cmd === 'mute' || cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update' || cmd === 'setgame') {
@@ -158,7 +154,16 @@ bot.on('message', (message) => {
         }
     }
 
-    
+    if(cmd === 'setgame') {
+        bot.user.setGame(origargs.join(' '));
+        message.channel.sendMessage(`Now playing "${origargs.join(' ')}".`);
+        return;
+    }
+
+    if(cmd === 'lockedhelp') {
+        message.channel.sendMessage(`${trigger}mute, sleep, shutdown, eval, update, setgame`);
+        return;
+    }
 
     if(cmd === 'mute') {
         let mutedRole = message.guild.roles.find('name', 'Muted');
