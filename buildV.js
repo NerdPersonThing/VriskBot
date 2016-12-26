@@ -83,8 +83,13 @@ bot.on('message', (message) => {
     }
 
     if(cmd === 'say') { //needs no-argument support
-        message.channel.sendMessage(origargs.join(' '));
-        return;
+        if(args.length === 0) {
+            message.channel.sendMessage('You have to give me something to say.');
+            return;
+        } else {
+            message.channel.sendMessage(origargs.join(' '));
+            return;
+        }
     }
 
     if(cmd === 'math') {
@@ -92,6 +97,10 @@ bot.on('message', (message) => {
         if(args[0] === 'add') {
 
             args = args.slice(1);
+            if(args.length === 0) {
+                message.channel.sendMessage('You have to give me numbers to add.');
+                return;
+            }
             let numArray = args.map(n=> parseInt(n));
 
             let sum = 0;
@@ -104,8 +113,7 @@ bot.on('message', (message) => {
                  return;
             } else {
                 if(sum !== sum) {
-                    if(args.length === 0) {
-                    } else {
+                    if(args.length !== 0) {
                         message.channel.sendMessage('I can\'t add that.');
                         return;
                     }
@@ -119,6 +127,8 @@ bot.on('message', (message) => {
             return;
         }
     }
+
+
     if(cmd === 'myid') {
         return message.reply(`Your Discord ID is ${message.author.id}.`);
         
