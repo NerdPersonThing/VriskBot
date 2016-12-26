@@ -1,7 +1,7 @@
 function everything() {
 
 const trigger = '%';
-const version = 'V1.1.1';
+const version = 'V1.1.2';
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -94,7 +94,7 @@ bot.on('message', (message) => {
             return;
     }
 
-    if(cmd === 'say') {
+    if(cmd === 'say') { //needs no-argument support
         message.channel.sendMessage(origargs.join(' '));
         return;
     }
@@ -145,7 +145,7 @@ bot.on('message', (message) => {
     
     
     if(message.author.id !== '193587165114925057') { 
-        if(cmd === 'mute' || cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update' || cmd === 'setgame') {
+        if(cmd === 'mute' || cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update' || cmd === 'setgame' || cmd === 'selfbotrestart') {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
             return;
         } else {
@@ -154,16 +154,26 @@ bot.on('message', (message) => {
         }
     }
 
+    if(cmd === 'lockedhelp') {
+        message.channel.sendMessage(`${trigger}mute, sleep, shutdown, eval, update, setgame, selfbotrestart`);
+        return;
+    }
+   
+    
+    if(cmd === 'selfbotrestart') {
+        child = exec("pm2 restart SelfBot", function (error, stdout, stderr) {
+            message.channel.sendMessage('Attempting to reboot SelfBot...');
+            console.log(`Attempting to reboot SelfBot...`);
+            if(error) return console.log(error);
+            });
+    }
+    
     if(cmd === 'setgame') {
         bot.user.setGame(origargs.join(' '));
         message.channel.sendMessage(`Now playing "${origargs.join(' ')}".`);
         return;
     }
 
-    if(cmd === 'lockedhelp') {
-        message.channel.sendMessage(`${trigger}mute, sleep, shutdown, eval, update, setgame`);
-        return;
-    }
 
     if(cmd === 'mute') {
         let mutedRole = message.guild.roles.find('name', 'Muted');
@@ -221,15 +231,15 @@ bot.on('message', (message) => {
                 evaled = require('util').inspect(evaled);
             }
 
-            message.channel.sendCode('xl', evaled);
+            message.channel.sendMessage(':arrow_right: CODE: \n\n `' + code + '`\n\n:white_check_mark: RESULT: \n\n`' + evaled + '`');
             return;
         } catch(err) {
-            message.channel.sendMessage(`ERROR: ${err}`);
+            message.channel.sendMessage(':arrow_right: CODE: \n\n `' + code + '`\n\n:octagonal_sign: ERROR: \n\n`' + err + '`');
             return;
         }
     }
 
-
+   
 
     if(cmd === 'update') {
         if(test === 0 || args[0] === 'override') {
