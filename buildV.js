@@ -1,7 +1,7 @@
 function everything() {
 
 const trigger = '%';
-const version = 'V1.1.2';
+const version = 'V1.1.3';
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -132,8 +132,8 @@ bot.on('message', (message) => {
         }
     }
     if(cmd === 'myid') {
-        message.reply(`Your Discord ID is ${message.author.id}.`);
-        return;
+        return message.reply(`Your Discord ID is ${message.author.id}.`);
+        
     }
     
 
@@ -183,7 +183,7 @@ bot.on('message', (message) => {
         if(message.mentions.users.size === 0) {
             return message.channel.sendMessage('Please mention a user to mute.');
         }
-        if(1 === 0) {
+        if(!message.guild.member(bot.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) {
             return message.channel.sendMessage('I don\'t have the proper permissions.');
         }
         muteMember.addRole(mutedRole);
@@ -196,10 +196,10 @@ bot.on('message', (message) => {
         if(message.mentions.users.size === 0) {
             return message.channel.sendMessage('Please mention a user to unmute.');
         }
-        if(1 === 0) {
+        if(!message.guild.member(bot.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) {
             return message.channel.sendMessage('I don\'t have the proper permissions.');
         }
-        if(1 === 0) {
+        if(!muteMember.roles.has(mutedRole.id)) {
             return message.channel.sendMessage('This member isn\'t muted!');
         }
         muteMember.removeRole(mutedRole);
