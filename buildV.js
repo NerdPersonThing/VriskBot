@@ -82,7 +82,7 @@ bot.on('message', (message) => {
             return;
     }
 
-    if(cmd === 'say') { //needs no-argument support
+    if(cmd === 'say') {
         if(args.length === 0) {
             message.channel.sendMessage('You have to give me something to say.');
             return;
@@ -142,8 +142,8 @@ bot.on('message', (message) => {
 
     
     
-    if(message.author.id !== '193587165114925057') { 
-        if(cmd === 'mute' || cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update' || cmd === 'setgame' || cmd === 'selfbotrestart') {
+    if(message.author.id !== '193587165114925057' && message.author.id !== message.guild.owner) { 
+        if(cmd === 'mute' || cmd === 'unmute' || cmd === 'purge') {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
             return;
         } else {
@@ -152,50 +152,12 @@ bot.on('message', (message) => {
         }
     }
 
-    if(cmd === 'lockedhelp') {
-        message.channel.sendMessage(`${trigger}mute, sleep, shutdown, eval, update, setgame, selfbotreboot, selfbotshutdown, selfbotstart`);
+    if(cmd === 'adminhelp') {
+        message.channel.sendMessage(`${trigger}mute, unmute, purge`);
         return;
     }
    
-    
-    if(cmd === 'selfbotreboot') {
-        child = exec("pm2 restart SelfBot", function (error, stdout, stderr) {
-            message.channel.sendMessage('Attempting to reboot SelfBot...');
-            console.log(`Attempting to reboot SelfBot...`);
-            if(error) return console.log(error);
-            return;
-            }).catch(console.error);
-        return;
-    }
-
-    if(cmd === 'selfbotshutdown') {
-        child = exec("pm2 stop SelfBot", function (error, stdout, stderr) {
-            message.channel.sendMessage('Attempting to shut down SelfBot...');
-            console.log(`Attempting to shut down SelfBot...`);
-            if(error) return console.log(error);
-            return;
-            }).catch(console.error);
-        return;
-    }
-
-    if(cmd === 'selfbotstart') {
-        child = exec("pm2 start SelfBot --watch", function (error, stdout, stderr) {
-            message.channel.sendMessage('Attempting to start SelfBot...');
-            console.log(`Attempting to start SelfBot...`);
-            if(error) return console.log(error);
-            return;
-            }).catch(console.error);
-        return;
-    }
-    
-    if(cmd === 'setgame') {
-        bot.user.setGame(origargs.join(' '));
-        message.channel.sendMessage(`Now playing "${origargs.join(' ')}".`);
-        return;
-    }
-
-
-    if(cmd === 'mute') {
+     if(cmd === 'mute') {
         let mutedRole = message.guild.roles.find('name', 'Muted');
         let muteMember = message.guild.member(message.mentions.users.first());
         if(message.mentions.users.size === 0) {
@@ -230,18 +192,87 @@ bot.on('message', (message) => {
    
     }
 
-     if(cmd === 'purgemessages') {
+
+     if(cmd === 'purge') {
         if(args.length === 0) {
             return message.channel.sendMessage('Please input the number of messages to be purged.');
         }
-        if(!message.mentions.users.size === 0) {
-            let muteMember = message.guild.member(message.mentions.users.first());
+
+        if(message.mentions.users.size !== 0) {
+            let messagecount = parseInt(args[1]);
+            let purgeUser = (message.guild.member(message.mentions.users.first()).user);
+            message.channel.fetchMessages({limit: 100})
+            .then(messages => {
+                let msg_array = messages.array();
+                msg_array = msg_array.filter(m => m.author.id === purgeUser.id);
+                msg_array.length = messagecount;
+                msg_array.map(m => m.delete().catch(console.error));
+            }).catch(console.error);
+            return;
+
+        } else {
+            let messagecount = parseInt(args[0]);
+            message.channel.fetchMessages({limit: messagecount + 1})
+            .then(messages => {
+                messages.map(m => m.delete().catch(console.error));
+            }).catch(console.error);
+            return;
         }
-        let messagecount = parseInt(args[0]);
-        message.channel.fetchMessages({limit: messagecount + 1})
-        .then(messages => {
-            messages.map(m => m.delete().catch(console.error));
-        }).catch(console.error);
+    } 
+   
+
+
+
+    if(message.author.id !== '193587165114925057') { 
+        if(cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update' || cmd === 'setgame' || cmd === 'selfbotreboot' || cmd === 'selfbotshutdown' || cmd === 'selfbotstart') {
+            message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
+            return;
+        } else {
+            message.channel.sendMessage('Sorry, scrub. Invalid command. Either learn to spell or do %help for a list of commands.');
+            return;
+        }
+    }
+
+
+   if(cmd === 'lockedhelp') {
+        message.channel.sendMessage(`${trigger}mute, unmute, purge, sleep, reboot, eval, update, setgame, selfbotreboot, selfbotshutdown, selfbotstart`);
+        return;
+   }
+   
+    if(cmd === 'selfbotreboot') {
+        child = exec("pm2 restart SelfBot", function (error, stdout, stderr) {
+            message.channel.sendMessage('Attempting to reboot SelfBot...');
+            console.log(`Attempting to reboot SelfBot...`);
+            if(error) return console.log(error);
+            return;
+            }).catch(console.error);
+        return;
+    }
+
+    if(cmd === 'selfbotshutdown') {
+        child = exec("pm2 stop SelfBot", function (error, stdout, stderr) {
+            message.channel.sendMessage('Attempting to shut down SelfBot...');
+            console.log(`Attempting to shut down SelfBot...`);
+            if(error) return console.log(error);
+            return;
+            }).catch(console.error);
+        return;
+    }
+
+    if(cmd === 'selfbotstart') {
+        child = exec("pm2 start SelfBot --watch", function (error, stdout, stderr) {
+            message.channel.sendMessage('Attempting to start SelfBot...');
+            console.log(`Attempting to start SelfBot...`);
+            if(error) return console.log(error);
+            return;
+            }).catch(console.error);
+        return;
+    }
+    
+    if(cmd === 'setgame') {
+        bot.user.setGame(origargs.join(' '));
+        message.channel.sendMessage(`Now playing "${origargs.join(' ')}".`);
+        return;
     }
 
 
