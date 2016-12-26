@@ -142,7 +142,7 @@ bot.on('message', (message) => {
 
     
     
-    if(message.author.id !== '193587165114925057' && message.author.id !== message.guild.owner) { 
+    if(message.author.id !== '193587165114925057' && message.author.id !== message.guild.owner.id) { 
         if(cmd === 'mute' || cmd === 'unmute' || cmd === 'purge') {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
             return;
