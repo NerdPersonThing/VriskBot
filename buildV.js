@@ -1,7 +1,7 @@
 function everything() {
 
 const trigger = '%';
-const version = 'V1.1.4';
+const version = 'V1.1.5';
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -154,7 +154,7 @@ bot.on('message', (message) => {
             console.log(`Attempting to reboot SelfBot...`);
             if(error) return console.log(error);
             return;
-            });
+            }).catch(console.error);
         return;
     }
 
@@ -164,7 +164,7 @@ bot.on('message', (message) => {
             console.log(`Attempting to shut down SelfBot...`);
             if(error) return console.log(error);
             return;
-            });
+            }).catch(console.error);
         return;
     }
 
@@ -174,7 +174,7 @@ bot.on('message', (message) => {
             console.log(`Attempting to start SelfBot...`);
             if(error) return console.log(error);
             return;
-            });
+            }).catch(console.error);
         return;
     }
     
@@ -220,6 +220,20 @@ bot.on('message', (message) => {
    
     }
 
+     if(cmd === 'purgemessages') {
+        if(args.length === 0) {
+            return message.channel.sendMessage('Please input the number of messages to be purged.');
+        }
+        if(!message.mentions.users.size === 0) {
+            let muteMember = message.guild.member(message.mentions.users.first());
+        }
+        let messagecount = parseInt(args[0]);
+        message.channel.fetchMessages({limit: messagecount + 1})
+        .then(messages => {
+            messages.map(m => m.delete().catch(console.error));
+        }).catch(console.error);
+    }
+
 
     if(cmd === 'sleep') {
         message.channel.sendMessage('Going to sleep...');
@@ -244,15 +258,13 @@ bot.on('message', (message) => {
                 evaled = require('util').inspect(evaled);
             }
 
-            message.channel.sendMessage(':arrow_right: CODE: \n\n `' + code + '`\n\n:white_check_mark: RESULT: \n\n`' + evaled + '`');
+            message.channel.sendMessage(`:arrow_right: CODE: \n\n \`${code}\`\n\n:white_check_mark: RESULT: \n\n\`${evaled}\``);
             return;
         } catch(err) {
-            message.channel.sendMessage(':arrow_right: CODE: \n\n `' + code + '`\n\n:octagonal_sign: ERROR: \n\n`' + err + '`');
+            message.channel.sendMessage(`:arrow_right: CODE: \n\n \`${code}\`\n\n:octagonal_sign: ERROR: \n\n\`${err}\``);
             return;
         }
     }
-
-   
 
     if(cmd === 'update') {
         if(test === 0 || args[0] === 'override') {
