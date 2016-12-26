@@ -186,6 +186,9 @@ bot.on('message', (message) => {
         if(!message.guild.member(bot.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) {
             return message.channel.sendMessage('I don\'t have the proper permissions.');
         }
+        if(!muteMember.roles.has(mutedRole.id)) {
+            return message.channel.sendMessage('This member is already muted.');
+        }
         muteMember.addRole(mutedRole);
         message.channel.sendMessage(`${message.mentions.users.first()} has been muted.`);
         return;
