@@ -1,7 +1,7 @@
 function everything() {
 
 const trigger = '%';
-const version = 'V1.1.3';
+const version = 'V1.1.4';
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -31,18 +31,6 @@ bot.on('message', (message) => {
     var origmsg = message.content;
     message.content = message.content.toLowerCase();
     
-    if(downshut === 1) {
-        if(message.content === 'y') {
-            shutdown();
-        } else if(message.content === 'n') {
-            message.channel.sendMessage('That was a close one!');
-            console.log('Shutdown canceled.');
-            downshut = 0
-            return;
-        } else {
-            return;
-        }
-    }
 
 
     if(message.content.startsWith(trigger + 'wakeup')) {
@@ -155,15 +143,35 @@ bot.on('message', (message) => {
     }
 
     if(cmd === 'lockedhelp') {
-        message.channel.sendMessage(`${trigger}mute, sleep, shutdown, eval, update, setgame, selfbotrestart`);
+        message.channel.sendMessage(`${trigger}mute, sleep, shutdown, eval, update, setgame, selfbotreboot, selfbotshutdown, selfbotstart`);
         return;
     }
    
     
-    if(cmd === 'selfbotrestart') {
+    if(cmd === 'selfbotreboot') {
         child = exec("pm2 restart SelfBot", function (error, stdout, stderr) {
             message.channel.sendMessage('Attempting to reboot SelfBot...');
             console.log(`Attempting to reboot SelfBot...`);
+            if(error) return console.log(error);
+            return;
+            });
+        return;
+    }
+
+    if(cmd === 'selfbotshutdown') {
+        child = exec("pm2 stop SelfBot", function (error, stdout, stderr) {
+            message.channel.sendMessage('Attempting to shut down SelfBot...');
+            console.log(`Attempting to shut down SelfBot...`);
+            if(error) return console.log(error);
+            return;
+            });
+        return;
+    }
+
+    if(cmd === 'selfbotstart') {
+        child = exec("pm2 start SelfBot --watch", function (error, stdout, stderr) {
+            message.channel.sendMessage('Attempting to start SelfBot...');
+            console.log(`Attempting to start SelfBot...`);
             if(error) return console.log(error);
             return;
             });
@@ -220,9 +228,9 @@ bot.on('message', (message) => {
         return;
     }
 
-    if(cmd === 'shutdown') {
-        message.channel.sendMessage('Are you sure you want to shut down the bot? Y/N');
-        downshut = 1
+    if(cmd === 'reboot') {
+        message.channel.sendMessage('Rebooting...');
+        shutdown();
         return;         
     }
     
