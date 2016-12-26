@@ -165,7 +165,9 @@ bot.on('message', (message) => {
             message.channel.sendMessage('Attempting to reboot SelfBot...');
             console.log(`Attempting to reboot SelfBot...`);
             if(error) return console.log(error);
+            return;
             });
+        return;
     }
     
     if(cmd === 'setgame') {
