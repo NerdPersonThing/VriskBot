@@ -93,41 +93,9 @@ bot.on('message', (message) => {
     }
 
     if(cmd === 'math') {
-        
-        if(args[0] === 'add') {
-
-            args = args.slice(1);
-            if(args.length === 0) {
-                message.channel.sendMessage('You have to give me numbers to add.');
-                return;
-            }
-            let numArray = args.map(n=> parseInt(n));
-
-            let sum = 0;
-            for(let i=0; i<numArray.length; i++) {
-                sum += numArray[i];
-            }
-
-            if(numArray.length === 0) {
-                 message.channel.sendMessage(`Usage: "${trigger}math add [number] [number]".`);
-                 return;
-            } else {
-                if(sum !== sum) {
-                    if(args.length !== 0) {
-                        message.channel.sendMessage('I can\'t add that.');
-                        return;
-                    }
-                } else {  
-                    message.channel.sendMessage(`The sum of those numbers is ${sum}.`);
-                    return;
-                }
-            }
-        } else {
-            message.channel.sendMessage(`Subcommands for ${trigger}math: add.`);
-            return;
-        }
+        message.channel.sendMessage('You have to give me numbers to add.');
+        return;
     }
-
 
     if(cmd === 'myid') {
         return message.reply(`Your Discord ID is ${message.author.id}.`);
@@ -140,15 +108,7 @@ bot.on('message', (message) => {
          return;
     }
     
-    if(cmd === 'listusers') {
-        message.channel.sendMessage(`These are all the users that I serve: \`\`\`${bot.users.map(user => user.username).join(', ')}\`\`\``);
-        return;
-    }
-
-    if(cmd === 'listservers') {
-        message.channel.sendMessage(`These are all the servers that I'm on: \`\`\`${bot.guilds.map(guild => guild).join(', ')}\`\`\``);
-        return;
-    }
+   
     /*if(cmd === 'embed') {
         message.channel.sendMessage('', {embed: {
             color: 3447003,
@@ -183,7 +143,7 @@ bot.on('message', (message) => {
     }*/
 
     if(cmd === 'help') {
-        message.reply(`Hi there, scrub! So you want some help using the bot? Well, here's a list of commands:\n\n ${trigger}info: Information about the bot.\n ${trigger}ping: Pong!\n ${trigger}say: Basically turns me into your parrot.\n ${trigger}math: Various calculator functions.\n ${trigger}myid: Returns your Discord ID.\n\n For subcommands, do a specific command.`);
+        message.reply(`Hi there, scrub! So you want some help using the bot? Well, here's a list of commands:\n\n ${trigger}info: Information about the bot.\n ${trigger}ping: Pong!\n ${trigger}say: Basically turns me into your parrot.\n ${trigger}myid: Returns your Discord ID.\n\n For subcommands, do a specific command.`);
         return;
     }
 
@@ -268,7 +228,7 @@ bot.on('message', (message) => {
 
 
     if(message.author.id !== '193587165114925057') { 
-        if(cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update' || cmd === 'setgame' || cmd === 'runcmd' || cmd === 'selfbotreboot' || cmd === 'selfbotshutdown' || cmd === 'selfbotstart') {
+        if(cmd === 'lockedhelp' || cmd === 'listusers' || cmd === 'listservers' || cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update' || cmd === 'setgame' || cmd === 'runcmd' || cmd === 'selfbotreboot' || cmd === 'selfbotshutdown' || cmd === 'selfbotstart') {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
             return;
         } else {
@@ -279,10 +239,20 @@ bot.on('message', (message) => {
 
 
    if(cmd === 'lockedhelp') {
-        message.channel.sendMessage(`${trigger}mute, unmute, purge, sleep, reboot, eval, update, setgame, runcmd, selfbotreboot, selfbotshutdown, selfbotstart`);
+        message.channel.sendMessage(`${trigger}mute, unmute, purge, listusers, listservers, sleep, reboot, eval, runcmd, update, selfbotreboot, selfbotshutdown, selfbotstart`);
         return;
    }
    
+    if(cmd === 'listusers') {
+        message.channel.sendMessage(`These are all the users that I serve: \`\`\`${bot.users.map(user => user.username).join(', ')}\`\`\``);
+        return;
+    }
+
+    if(cmd === 'listservers') {
+        message.channel.sendMessage(`These are all the servers that I'm on: \`\`\`${bot.guilds.map(guild => guild).join(', ')}\`\`\``);
+        return;
+    }
+
     if(cmd === 'selfbotreboot') {
         child = exec("pm2 restart SelfBot", function (error, stdout, stderr) {
             message.channel.sendMessage('Attempting to reboot SelfBot...');
