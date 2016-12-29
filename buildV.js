@@ -1,7 +1,7 @@
 function everything() {
 
 const trigger = '%';
-const version = 'V1.1.7';
+const version = 'V1.1.8';
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -72,7 +72,7 @@ bot.on('message', (message) => {
     console.log(`${message.author.username}: "${message.content}"`);
 
     if(cmd === 'info') {
-        message.reply(`Hello! My name is Vriskbot, version ${version}. I live on a Raspberry Pi! \n I was programmed - albeit not very well - by some guy named Luke. *(I\'ve heard he has a large forehead.)* Anyway, if you want to see what I can do, just do %help.`);
+        message.reply(`Hello! My name is Vriskbot, version ${version}. I live on a Raspberry Pi! I serve a total ${bot.users.size} users across ${bot.guilds.size} servers. \n\n I was programmed - albeit not very well - by some guy named Luke. *(I\'ve heard he has a large forehead.)* \n Anyway, if you want to see what I can do, just do ${trigger}help.`);
         return;
     }
            
@@ -109,7 +109,7 @@ bot.on('message', (message) => {
             }
 
             if(numArray.length === 0) {
-                 message.channel.sendMessage('Usage: "%math add [number] [number]".');
+                 message.channel.sendMessage(`Usage: "${trigger}math add [number] [number]".`);
                  return;
             } else {
                 if(sum !== sum) {
@@ -138,6 +138,16 @@ bot.on('message', (message) => {
          message.channel.sendMessage("'Kay.");
          bot.users.get(message.author.id).sendMessage("Yo.");
          return;
+    }
+    
+    if(cmd === 'listusers') {
+        message.channel.sendMessage(`These are all the users that I serve: \`\`\`${bot.users.map(user => user.username).join(', ')}\`\`\``);
+        return;
+    }
+
+    if(cmd === 'listservers') {
+        message.channel.sendMessage(`These are all the servers that I'm on: \`\`\`${bot.guilds.map(guild => guild).join(', ')}\`\`\``);
+        return;
     }
     /*if(cmd === 'embed') {
         message.channel.sendMessage('', {embed: {
@@ -262,7 +272,7 @@ bot.on('message', (message) => {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
             return;
         } else {
-            message.channel.sendMessage('Sorry, scrub. Invalid command. Either learn to spell or do %help for a list of commands.');
+            message.channel.sendMessage(`Sorry, scrub. Invalid command. Either learn to spell or do ${trigger}help for a list of commands.`);
             return;
         }
     }
@@ -315,7 +325,7 @@ bot.on('message', (message) => {
                 console.log(stdout);
                 message.channel.sendMessage(`Result: \`\`\`${stdout}\`\`\``);
             }
-            });
+        });
         return;
     }
     
@@ -374,13 +384,13 @@ bot.on('message', (message) => {
             }
             });
         } else {
-            message.channel.sendMessage('You can\'t update the testbot without using `%update override.`');
+            message.channel.sendMessage(`You can\'t update the testbot without using \`${trigger}update override.\``);
             return;
         }
     }
 
    if(cmd !== 'update') {
-        message.channel.sendMessage('Sorry, scrub. Invalid command. Either learn to spell or do %help for a list of commands.');
+        message.channel.sendMessage(`Sorry, scrub. Invalid command. Either learn to spell or do ${trigger}help for a list of commands.`);
         return;
    }
 
@@ -411,8 +421,7 @@ if(test === 1) {
 
 bot.on('ready', () => {
     console.log('Bot is up and running. Press CTRL+C to stop...');
-    bot.channels.get('262249669692882946').sendMessage(`Vriskbot online, version ${version}.`);
-
+    bot.channels.get('262249669692882946').sendMessage(`Vriskbot online, version ${version}. Serving ${bot.users.size} users across ${bot.guilds.size} servers.`);
 }); //end readylog
 
 
