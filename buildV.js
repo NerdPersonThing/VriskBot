@@ -261,7 +261,7 @@ bot.on('message', (message) => {
 
 
     if(message.author.id !== '193587165114925057') { 
-        if(cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update' || cmd === 'setgame' || cmd === 'selfbotreboot' || cmd === 'selfbotshutdown' || cmd === 'selfbotstart') {
+        if(cmd === 'sleep' || cmd === 'shutdown' || cmd === 'eval' || cmd === 'update' || cmd === 'setgame' || cmd === 'runcmd' || cmd === 'selfbotreboot' || cmd === 'selfbotshutdown' || cmd === 'selfbotstart') {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
             return;
         } else {
@@ -272,7 +272,7 @@ bot.on('message', (message) => {
 
 
    if(cmd === 'lockedhelp') {
-        message.channel.sendMessage(`${trigger}mute, unmute, purge, sleep, reboot, eval, update, setgame, selfbotreboot, selfbotshutdown, selfbotstart`);
+        message.channel.sendMessage(`${trigger}mute, unmute, purge, sleep, reboot, eval, update, setgame, runcmd, selfbotreboot, selfbotshutdown, selfbotstart`);
         return;
    }
    
