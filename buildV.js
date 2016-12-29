@@ -1,7 +1,7 @@
 function everything() {
 
 const trigger = '%';
-const version = 'V1.1.5';
+const version = 'V1.1.6';
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -134,6 +134,43 @@ bot.on('message', (message) => {
         
     }
     
+    if(cmd === 'dmme') {
+         message.channel.sendMessage("'Kay.");
+         bot.users.get(message.author.id).sendMessage("Yo.");
+         return;
+    }
+    /*if(cmd === 'embed') {
+        message.channel.sendMessage('', {embed: {
+            color: 3447003,
+            author: {
+                name: bot.user.username,
+                icon_url: bot.user.avatarURL
+            },
+            title: 'This is an embed',
+            url: 'http://google.com',
+            description: 'This is a test embed to showcase what they look like and what they can do.',
+            fields: [
+                {
+                    name: 'Fields',
+                    value: 'They can have different fields with small headlines.'
+                },
+                {
+                    name: 'Masked links',
+                    value: 'You can put [masked links](http://google.com) inside of rich embeds.'
+                },
+                {
+                    name: 'Markdown',
+                    value: 'You can put all the *usual* **__Markdown__** inside of them.'
+                }
+            ],
+            timestamp: new Date(),
+            footer: {
+                icon_url: bot.user.avatarURL,
+                text: '© Example'
+            }
+        }}).catch(console.error);
+        return;
+    }*/
 
     if(cmd === 'help') {
         message.reply(`Hi there, scrub! So you want some help using the bot? Well, here's a list of commands:\n\n ${trigger}info: Information about the bot.\n ${trigger}ping: Pong!\n ${trigger}say: Basically turns me into your parrot.\n ${trigger}math: Various calculator functions.\n ${trigger}myid: Returns your Discord ID.\n\n For subcommands, do a specific command.`);
@@ -268,6 +305,22 @@ bot.on('message', (message) => {
             }).catch(console.error);
         return;
     }
+
+    if(cmd === 'runcmd') {
+        child = exec(origargs.join(' '), function (error, stdout, stderr) {
+            message.channel.sendMessage(`Attempting to execute "${origargs.join(' ')}" in the terminal... `);
+            console.log(`Attempting to execute "${origargs.join(' ')}"...`);
+            if(error) {
+                console.log(error);
+                message.channel.sendMessage(`ERROR: ${error}`);
+                return;
+            } else {
+                console.log(stdout);
+                message.channel.sendMessage(`Result: ${stdout}`);
+            }
+            });
+        return;
+    }
     
     if(cmd === 'setgame') {
         bot.user.setGame(origargs.join(' '));
@@ -360,7 +413,7 @@ if(test === 1) {
 
 bot.on('ready', () => {
     console.log('Bot is up and running. Press CTRL+C to stop...');
-    bot.channels.get('262249669692882946').sendMessage(`Bot online, version ${version}.`);
+    bot.channels.get('262249669692882946').sendMessage(`Vriskbot online, version ${version}.`);
 
 }); //end readylog
 
@@ -371,7 +424,9 @@ function shutdown() {
     process.exit(1);
     }
 
-
+bot.on("unhandledRejection", err => {
+  console.error("Uncaught Promise Error: \n" + err.stack);
+});
 
 
 } //end everything();
