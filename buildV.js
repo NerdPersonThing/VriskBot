@@ -1,7 +1,7 @@
 function everything() {
 
 const trigger = '%';
-const version = 'V1.1.6';
+const version = 'V1.1.7';
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -180,11 +180,8 @@ bot.on('message', (message) => {
     
     
     if(message.author.id !== '193587165114925057' && message.author.id !== message.guild.owner.id) { 
-        if(cmd === 'mute' || cmd === 'unmute' || cmd === 'purge') {
+        if(cmd === 'adminhelp' || cmd === 'mute' || cmd === 'unmute' || cmd === 'purge') {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
-            return;
-        } else {
-            message.channel.sendMessage('Sorry, scrub. Invalid command. Either learn to spell or do %help for a list of commands.');
             return;
         }
     }
@@ -312,11 +309,11 @@ bot.on('message', (message) => {
             console.log(`Attempting to execute "${origargs.join(' ')}"...`);
             if(error) {
                 console.log(error);
-                message.channel.sendMessage(`ERROR: ${error}`);
+                message.channel.sendMessage(`ERROR: \`\`\`${error}\`\`\``);
                 return;
             } else {
                 console.log(stdout);
-                message.channel.sendMessage(`Result: ${stdout}`);
+                message.channel.sendMessage(`Result: \`\`\`${stdout}\`\`\``);
             }
             });
         return;
@@ -343,7 +340,7 @@ bot.on('message', (message) => {
     }
     
 
-    if(cmd === 'eval') {
+     if(cmd === 'eval') {
         try {
             var code = origargs.join(' ');
             var evaled = eval(code);
@@ -352,13 +349,14 @@ bot.on('message', (message) => {
                 evaled = require('util').inspect(evaled);
             }
 
-            message.channel.sendMessage(`:arrow_right: CODE: \n\n \`${code}\`\n\n:white_check_mark: RESULT: \n\n\`${evaled}\``);
+            message.channel.sendMessage(`:arrow_right: CODE: \`\`\`${code}\`\`\` \n:white_check_mark: RESULT: \`\`\`${evaled}\`\`\``);
             return;
         } catch(err) {
-            message.channel.sendMessage(`:arrow_right: CODE: \n\n \`${code}\`\n\n:octagonal_sign: ERROR: \n\n\`${err}\``);
+            message.channel.sendMessage(`:arrow_right: CODE: \`\`\`${code}\`\`\` \n:octagonal_sign: ERROR: \`\`\`${err}\`\`\``);
             return;
         }
     }
+
 
     if(cmd === 'update') {
         if(test === 0 || args[0] === 'override') {
