@@ -93,7 +93,7 @@ bot.on('message', (message) => {
     }
 
     if(cmd === 'math') {
-        message.channel.sendMessage('You have to give me numbers to add.');
+        message.channel.sendMessage('Do the math yourself. I\'m not your calculator.');
         return;
     }
 
