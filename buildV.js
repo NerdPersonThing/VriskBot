@@ -2,6 +2,8 @@ function everything() {
 
 const trigger = '%';
 const version = 'V1.1.8';
+const colorT = 0xffa500;
+const colorV = 0x005682;
 
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
@@ -15,9 +17,11 @@ var scriptName = path.basename(__filename); //writes name of JS file as scriptNa
 
 if(scriptName === 'buildT.js') {
     test = 1;
+    color1 = colorT;
 }
 if(scriptName === 'buildV.js') {
     test = 0;
+    color1 = colorV;
 }
 
 
@@ -109,9 +113,9 @@ bot.on('message', (message) => {
     }
     
    
-    /*if(cmd === 'embed') {
+    if(cmd === 'testembed') {
         message.channel.sendMessage('', {embed: {
-            color: 3447003,
+            color: color1,
             author: {
                 name: bot.user.username,
                 icon_url: bot.user.avatarURL
@@ -140,12 +144,48 @@ bot.on('message', (message) => {
             }
         }}).catch(console.error);
         return;
-    }*/
+    }
 
     if(cmd === 'help') {
-        message.reply(`Hi there, scrub! So you want some help using the bot? Well, here's a list of commands:\n\n ${trigger}info: Information about the bot.\n ${trigger}ping: Pong!\n ${trigger}say: Basically turns me into your parrot.\n ${trigger}myid: Returns your Discord ID.\n\n For subcommands, do a specific command.`);
+        message.channel.sendMessage('', {embed: {
+            color: color1,
+            
+            title: `Vriskbot, version ${version}.`,
+            description: `Hi there, scrub! So you want some help using the bot? Well, here's a list of commands:`,
+            fields: [
+                {
+                    name: `${trigger}info`, 
+                    value: 'Information about the bot.'
+                },
+                {
+                    name: `${trigger}ping`,
+                    value: 'Pong!'
+                },
+                {
+                    name: `${trigger}say`,
+                    value: 'Basically turns me into your parrot.'
+                },
+                {
+                    name: `${trigger}myid`,
+                    value: 'Returns your Discord ID.'
+                },
+                {
+                    name: `${trigger}help`,
+                    value: 'Sends this message.'
+                }
+            ],
+            timestamp: new Date(),
+            footer: {
+                text: 'For subcommands, do a specific command.'
+            }
+        }}).catch(console.error);
         return;
-    }
+    } //end help command
+        
+        
+        /*message.reply(`Hi there, scrub! So you want some help using the bot? Well, here's a list of commands:\n\n ${trigger}info: Information about the bot.\n : Pong!\n ${trigger}say: Basically turns me into your parrot.\n ${trigger}myid: Returns your Discord ID.\n\n For subcommands, do a specific command.`);
+        return;*/
+
 
     
     
@@ -161,40 +201,33 @@ bot.on('message', (message) => {
         return;
     }
    
-     if(cmd === 'mute') {
+     if(cmd === 'mute' || cmd === 'unmute') {
         let mutedRole = message.guild.roles.find('name', 'Muted');
         let muteMember = message.guild.member(message.mentions.users.first());
         if(message.mentions.users.size === 0) {
-            return message.channel.sendMessage('Please mention a user to mute.');
+            return message.channel.sendMessage(`Please mention a user to ${cmd}.`);
         }
         if(!message.guild.member(bot.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) {
             return message.channel.sendMessage('I don\'t have the proper permissions.');
         }
-        if(muteMember.roles.has(mutedRole.id)) {
-            return message.channel.sendMessage('This member is already muted.');
+        if(cmd === 'mute') {
+            if(muteMember.roles.has(mutedRole.id)) {
+                return message.channel.sendMessage('This member is already muted.');
+            }
+            muteMember.addRole(mutedRole);
+            message.channel.sendMessage(`${message.mentions.users.first()} has been muted.`);
+            return;
         }
-        muteMember.addRole(mutedRole);
-        message.channel.sendMessage(`${message.mentions.users.first()} has been muted.`);
-        return;
-    }
-     if(cmd === 'unmute') {
-        let mutedRole = message.guild.roles.find('name', 'Muted');
-        let muteMember = message.guild.member(message.mentions.users.first());
-        if(message.mentions.users.size === 0) {
-            return message.channel.sendMessage('Please mention a user to unmute.');
+        if(cmd === 'unmute') {
+            if(!muteMember.roles.has(mutedRole.id)) {
+                return message.channel.sendMessage('This member isn\'t muted!');
+            }
+            muteMember.removeRole(mutedRole);
+            message.channel.sendMessage(`${message.mentions.users.first()} has been unmuted.`);
+            return;
         }
-        if(!message.guild.member(bot.user).hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) {
-            return message.channel.sendMessage('I don\'t have the proper permissions.');
-        }
-        if(!muteMember.roles.has(mutedRole.id)) {
-            return message.channel.sendMessage('This member isn\'t muted!');
-        }
-        muteMember.removeRole(mutedRole);
-        message.channel.sendMessage(`${message.mentions.users.first()} has been unmuted.`)
-
-        return;
-   
-    }
+    } //end mute/unmute
+     
 
 
      if(cmd === 'purge') {
@@ -259,7 +292,7 @@ bot.on('message', (message) => {
             console.log(`Attempting to reboot SelfBot...`);
             if(error) return console.log(error);
             return;
-            }).catch(console.error);
+            });
         return;
     }
 
@@ -269,7 +302,7 @@ bot.on('message', (message) => {
             console.log(`Attempting to shut down SelfBot...`);
             if(error) return console.log(error);
             return;
-            }).catch(console.error);
+            });
         return;
     }
 
@@ -279,7 +312,7 @@ bot.on('message', (message) => {
             console.log(`Attempting to start SelfBot...`);
             if(error) return console.log(error);
             return;
-            }).catch(console.error);
+            });
         return;
     }
 
