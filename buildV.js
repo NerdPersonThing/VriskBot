@@ -11,6 +11,7 @@ const bot = new Discord.Client();
 var exec = require('child_process').exec;
 var sleep = 0;
 var downshut = 0;
+var datime = 'void';
 
 var path = require('path');
 var scriptName = path.basename(__filename); //writes name of JS file as scriptName
@@ -73,7 +74,8 @@ bot.on('message', (message) => {
     let origargs = origmsg.split(' ').slice(1);
     let args = message.content.split(' ').slice(1);
 
-    console.log(`${message.author.username}: "${message.content}"`);
+    timestamp();
+    console.log(`${datime}: ${message.author.username}: "${message.content}"`);
 
     if(cmd === 'info') {
         message.reply(`Hello! My name is Vriskbot, version ${version}. I live on a Raspberry Pi! I serve a total ${bot.users.size} users across ${bot.guilds.size} servers. \n\n I was programmed - albeit not very well - by some guy named Luke. *(I\'ve heard he has a large forehead.)* \n Anyway, if you want to see what I can do, just do ${trigger}help.`);
@@ -423,10 +425,24 @@ if(test === 1) {
 
 
 bot.on('ready', () => {
-    console.log('Bot is up and running. Press CTRL+C to stop...');
-    bot.channels.get('262249669692882946').sendMessage(`Vriskbot online, version ${version}. Serving ${bot.users.size} users across ${bot.guilds.size} servers.`);
+    timestamp();
+    console.log(`ALERT: ${datime}: Bot is up and running. Press CTRL+C to stop...`);
+    bot.channels.get('262249669692882946').sendMessage(`${datime}: Vriskbot online, version ${version}. Serving ${bot.users.size} users across ${bot.guilds.size} servers.`);
 }); //end readylog
 
+function timestamp() {
+    let date = new Date();
+    
+    let yy = date.getFullYear();
+    let mm = date.getMonth()+1;
+    let dd = date.getDate();
+    let h = date.getHours(); h = (h < 10 ? "0" : "") + h;
+    let m = date.getMinutes(); m = (m < 10 ? "0" : "") + m;
+    let s = date.getSeconds(); s = (s < 10 ? "0" : "") + s;
+    
+    datime = `${yy}/${mm}/${dd}, ${h}:${m}:${s}`
+
+}
 
 
 function shutdown() {
