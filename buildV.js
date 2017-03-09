@@ -289,13 +289,7 @@ bot.on('message', (message) => {
     }
 
     if(cmd === 'selfbotreboot') {
-        child = exec("pm2 restart SelfBot", function (error, stdout, stderr) {
-            message.channel.sendMessage('Attempting to reboot SelfBot...');
-            console.log(`Attempting to reboot SelfBot...`);
-            if(error) return console.log(error);
-            return;
-            });
-        return;
+        message.channel.sendMessage(`Just use ${trigger}selfbotshutdown and then ${trigger}selfbotstart. Less buggy.`);  
     }
 
     if(cmd === 'selfbotshutdown') {
