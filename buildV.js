@@ -89,13 +89,15 @@ bot.on('message', (message) => {
     }
 
     if(cmd === 'say') {
-        if(args.length === 0) {
-            message.channel.sendMessage('You have to give me something to say.');
-            return;
-        } else {
-            message.channel.sendMessage(origargs.join(' '));
-            message.delete();
-            return;
+        if(message.author.id !== '194130163246694401') {
+            if(args.length === 0) {
+                message.channel.sendMessage('You have to give me something to say.');
+                return;
+            } else {
+                message.channel.sendMessage(origargs.join(' '));
+                message.delete();
+                return;
+            }
         }
     }
 
