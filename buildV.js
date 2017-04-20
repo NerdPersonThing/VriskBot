@@ -94,6 +94,7 @@ bot.on('message', (message) => {
             return;
         } else {
             message.channel.sendMessage(origargs.join(' '));
+            message.delete();
             return;
         }
     }
