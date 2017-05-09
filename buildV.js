@@ -8,9 +8,12 @@ const colorV = 0x005682;
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+const ytdl = require('ytdl-core');
+var request = require("superagent");
 var exec = require('child_process').exec;
 var sleep = 0;
 var downshut = 0;
+var voiceBusy = 0;
 var datime = 'void';
 
 var path = require('path');
@@ -101,6 +104,45 @@ bot.on('message', (message) => {
         }
     }
 
+    if(cmd === 'doit') {
+        if(voiceBusy === 0) {
+            if(typeof message.member.voiceChannel !== 'undefined') {
+                voiceBusy = 1;
+                var voiceChannel = message.member.voiceChannel;
+                voiceChannel.join().then(connection =>{
+                    var bluh = connection.playFile('./Do_it.mp3');
+                    bluh.on("end", end => {
+                        voiceChannel.leave();
+                        voiceBusy = 0;
+                    });
+                }).catch(err => console.log(err));
+            }
+        } else {
+            message.reply('Voice is busy right now.');
+        }
+        return;
+    }
+
+    /* if(cmd === 'play') {
+        if(voiceBusy === 0){
+            if(typeof message.member.voiceChannel !== 'undefined') {
+                voiceBusy = 1;
+                var voiceChannel = message.member.voiceChannel;
+                voiceChannel.join().then(connection =>{
+                        console.log(args[0]);
+                        const stream = ytdl(args[0], { filter: 'audioonly'});
+                        const dispatcher = connnection.playStream(stream);
+                        dispatcher.on('end', () => voiceChannel.leave());
+                       
+                }).catch(err => console.log(err));
+
+            }
+        } else {
+            message.reply('Voice is busy right now.');
+        }
+        return;
+    } */
+
     if(cmd === 'math') {
         message.channel.sendMessage('Do the math yourself. I\'m not your calculator.');
         return;
@@ -177,6 +219,10 @@ bot.on('message', (message) => {
                 {
                     name: `${trigger}help`,
                     value: 'Sends this message.'
+                },
+                {
+                    name: `${trigger}doit`, 
+                    value: 'DO IT.'
                 }
             ],
             timestamp: new Date(),
@@ -194,7 +240,7 @@ bot.on('message', (message) => {
 
     
     
-    if(message.author.id !== '193587165114925057' && message.author.id !== message.guild.owner.id) { 
+    if(message.author.id !== '193587165114925057' && message.author.id !== '193199713925726208' && message.author.id !== message.guild.owner.id) { 
         if(cmd === 'adminhelp' || cmd === 'mute' || cmd === 'unmute' || cmd === 'purge') {
             message.reply('You\'re such a pleb! You don\'t have permission to run this command. Freaking scrub.');
             return;
