@@ -8,7 +8,7 @@ const colorV = 0x005682;
 const config = require('../configVrisk.json');
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-const ytdl = require('ytdl-core');
+//const ytdl = require('ytdl-core');
 var request = require("superagent");
 var exec = require('child_process').exec;
 var sleep = 0;
@@ -456,6 +456,13 @@ bot.on("guildMemberRemove", (member) => {
         guild.defaultChannel.sendMessage(`${member.user.username} has left the server. Guess someone got salty.`);
 
 }); //end member leaves event
+
+setInterval(function(){
+    timestamp();
+    bot.channels.get('321402536709849101').sendMessage(`${datime} | | | | | | | | | | | | | | | | | | |`);
+}, 60000);
+
+
 
 
 if(test === 1) {
